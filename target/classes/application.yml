@@ -1,0 +1,73 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: app01
+  main:
+    banner-mode: OFF
+  mvc:
+    problemdetails:
+      enabled: true
+  datasource:
+    hikari:
+      connectionTimeout: ${HIKARI_MAXIMUM_CON_TIMEOUT:10000}
+      maximumPoolSize: ${HIKARI_MAXIMUM_POOL_SIZE:10}
+      minimum-idle: 2
+      idle-timeout: 20000
+      idleTimeout: ${HIKARI_IDLE_TIMEOUT:600000}
+      max-lifetime: 5000 # maximum lifetime in milliseconds of a connection in the pool after it is closed.
+      auto-commit: true #default auto-commit behavior.
+      # https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+    driver-class-name: org.postgresql.Driver
+    testWhileIdle: 'true'
+    password: ${DATASOURCE_PASSWORD:123}
+    username: ${DATASOURCE_USERNAME:admin}
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/rinhadb?useSSL=false}
+    validationQuery: SELECT 1
+
+
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: "*"
+    web:
+      expose:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+      show-components: never
+
+#  jackson:
+#    mapper:
+#      DEFAULT_VIEW_INCLUSION: true
+#    serialization:
+#      indent_output: true
+#      WRITE_DATES_AS_TIMESTAMPS: false
+#    deserialization:
+#      FAIL_ON_IGNORED_PROPERTIES: false
+#      FAIL_ON_UNKNOWN_PROPERTIES: false
+#      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
+#    default-property-inclusion: non_empty
+
+logging:
+  level:
+    root: ERROR
+    org.springframework: ERROR
+    br.com.vnrg: ERROR

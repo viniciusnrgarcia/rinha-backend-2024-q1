@@ -1,0 +1,1 @@
+[engine:junit-jupiter]/[class:br.com.vnrg.rinhabackend2024q1.RinhaBackend2024Q1ApplicationTests]/[method:contextLoads()]
