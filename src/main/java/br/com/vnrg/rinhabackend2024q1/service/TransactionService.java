@@ -7,7 +7,6 @@ import br.com.vnrg.rinhabackend2024q1.repository.CustomerEntity;
 import br.com.vnrg.rinhabackend2024q1.repository.CustomerRepository;
 import br.com.vnrg.rinhabackend2024q1.repository.TransactionEntity;
 import br.com.vnrg.rinhabackend2024q1.repository.TransactionRepository;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +23,7 @@ public class TransactionService {
         this.customerRepository = customerRepository;
     }
 
-    // @Transactional
-    @Cacheable
+    @Transactional
     public CustomerEntity getCustomer(int id) {
         var customer = this.customerRepository.find(id);
         if (customer == null) {
@@ -45,6 +43,6 @@ public class TransactionService {
     }
 
     public List<TransactionEntity> report(CustomerEntity customer) {
-         return this.repository.list(customer.getId());
+        return this.repository.list(customer.getId());
     }
 }

@@ -15,9 +15,13 @@ CREATE UNLOGGED TABLE IF NOT EXISTS transactions (
 );
 
 CREATE INDEX idx_customer_id ON transactions(id);
--- CREATE INDEX idx_customer_id ON transactions(id, created_at);
--- CREATE INDEX idx_cliente_realizada_em ON transacoes (cliente_id, realizada_em);
 
+--$$ LANGUAGE plpgsql;
+--
+--CREATE TRIGGER atualizar_saldo_trigger
+--AFTER INSERT ON transacoes
+--FOR EACH ROW
+--EXECUTE FUNCTION atualizar_saldo();
 
 --SET statement_timeout = 0;
 --SET lock_timeout = 0;

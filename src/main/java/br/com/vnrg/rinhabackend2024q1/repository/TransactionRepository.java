@@ -44,7 +44,7 @@ public class TransactionRepository {
                 	t.id, t.type, t.description, t.total_value, t.created_at
                  from transactions t
                 where t.id = ?
-                order by t.created_at desc limit 10 offset 0
+                order by t.created_at limit 10 offset 0
                 """)
                 .param(id)
                 .query(
@@ -58,7 +58,6 @@ public class TransactionRepository {
                         )
                 )
                 .list();
-        // todo: verificar ordenação no java
 
     }
 

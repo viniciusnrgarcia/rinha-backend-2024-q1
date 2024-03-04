@@ -16,7 +16,7 @@ public class CustomerRepository {
         this.jdbcClient = jdbcClient;
     }
 
-    // @Cacheable
+    @Cacheable
     public CustomerEntity find(int id) {
         return this.findAll().get(id);
     }

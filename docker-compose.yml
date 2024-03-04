@@ -20,8 +20,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.25"
-          memory: "155MB"
+          cpus: "0.3"
+          memory: "120MB"
 
   api02:
     # Essa sintaxe reusa o que foi declarado em 'api01'.
@@ -46,7 +46,7 @@ services:
       resources:
         limits:
           cpus: "0.20"
-          memory: "40MB"
+          memory: "30MB"
 
   db:
     image: postgres:latest
@@ -69,8 +69,8 @@ services:
           # aqui declarados é de 1.5 unidades de CPU e 550MB
           # de memória. A distribuição feita aqui é apenas
           # um exemplo – distribua como quiser.
-          cpus: "0.80"
-          memory: "200MB"
+          cpus: "0.70"
+          memory: "280MB"
 #    networks:
 #      - app-network
     healthcheck:

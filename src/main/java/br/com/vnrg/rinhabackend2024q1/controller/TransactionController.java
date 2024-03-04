@@ -7,10 +7,11 @@ import br.com.vnrg.rinhabackend2024q1.service.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class TransactionController {
@@ -22,21 +23,24 @@ public class TransactionController {
     }
 
     @PostMapping(path = "clientes/{id}/transacoes")
-    ResponseEntity<TransactionResponse> create(@PathVariable(name = "id") Integer id,
-                                               @Valid @RequestBody TransactionRequest request) {
+    Mono<ResponseEntity<TransactionResponse>> create(@PathVariable(name = "id") Integer id,
+                                                    @Valid @RequestBody TransactionRequest request) {
         var customer = this.getCustomer(id);
-        return ResponseEntity.ok(
+        return Mono.just(
+                ResponseEntity.ok(
                 new TransactionResponse(customer.getPositiveLimitAccount(),
-                        this.service.create(customer, request)));
+                        this.service.create(customer, request)))
+        );
     }
 
     @GetMapping(path = "clientes/{id}/extrato")
-    ResponseEntity<ReportResponse> create(@PathVariable(name = "id") Integer id) {
+    Mono<ResponseEntity<ReportResponse>> create(@PathVariable(name = "id") Integer id) {
         var customer = this.getCustomer(id);
+
         var transactions = this.service.report(customer);
 
         var total = 0;
-        List<TransactionsResponse> ultimas_transacoes = new ArrayList<>();
+        var ultimas_transacoes = new ArrayList<TransactionsResponse>();
         for (TransactionEntity t : transactions) {
             total += t.totalValue();
             ultimas_transacoes.add(
@@ -46,13 +50,13 @@ public class TransactionController {
                             t.createdAt())
             );
         }
-
-        return ResponseEntity.ok(
+        return Mono.just(
+                ResponseEntity.ok(
                 new ReportResponse(
                         new BalanceResponse(total, LocalDateTime.now(),
                                 customer.getPositiveLimitAccount()),
-                        ultimas_transacoes)
-                );
+                        ultimas_transacoes))
+        );
     }
 
     private CustomerEntity getCustomer(Integer id) {
