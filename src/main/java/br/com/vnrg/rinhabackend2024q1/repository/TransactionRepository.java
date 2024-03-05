@@ -40,10 +40,12 @@ public class TransactionRepository {
                 .update();
     }
 
+    @Transactional
     public List<TransactionEntity> list(int id) {
         return this.jdbcClient.sql("""
                 select
-                	t.id, t.type, t.description, t.total_value, t.created_at
+                	t.id, t.type, t.description, abs(t.total_value) as total_value, t.created_at,
+                	sum(t.total_value) over (partition by t.id) as total
                  from transactions t
                 where t.id = ?
                 order by t.created_at desc limit 10 offset 0
@@ -56,7 +58,8 @@ public class TransactionRepository {
                                 rs.getString("type"),
                                 rs.getString("description"),
                                 rs.getInt("total_value"),
-                                rs.getTimestamp("created_at").toLocalDateTime()
+                                rs.getTimestamp("created_at").toLocalDateTime(),
+                                rs.getInt("total")
                         )
                 )
                 .list();

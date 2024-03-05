@@ -38,13 +38,13 @@ public class TransactionController {
         var total = 0;
         List<TransactionsResponse> ultimas_transacoes = new ArrayList<>();
         for (TransactionEntity t : transactions) {
-            total += t.totalValue();
             ultimas_transacoes.add(
                     new TransactionsResponse(t.totalValue(),
                             t.type(),
                             t.description(),
                             t.createdAt())
             );
+            total = t.total();
         }
 
         return ResponseEntity.ok(
