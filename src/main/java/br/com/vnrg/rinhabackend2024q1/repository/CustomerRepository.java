@@ -21,7 +21,7 @@ public class CustomerRepository {
         return this.findAll().get(id);
     }
 
-    @Cacheable
+    @Cacheable("customers.findAll")
     private ConcurrentHashMap<Integer, CustomerEntity> findAll() {
         List<CustomerEntity> result = this.jdbcClient.sql("""
                 select c.id, c.limit_account , c.balance  from customers c

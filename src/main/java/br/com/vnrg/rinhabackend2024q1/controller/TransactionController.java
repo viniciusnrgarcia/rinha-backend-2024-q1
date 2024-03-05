@@ -1,6 +1,5 @@
 package br.com.vnrg.rinhabackend2024q1.controller;
 
-import br.com.vnrg.rinhabackend2024q1.exceptions.CustomerNotFoundException;
 import br.com.vnrg.rinhabackend2024q1.repository.CustomerEntity;
 import br.com.vnrg.rinhabackend2024q1.repository.TransactionEntity;
 import br.com.vnrg.rinhabackend2024q1.service.TransactionService;
