@@ -2,6 +2,7 @@ package br.com.vnrg.rinhabackend2024q1.repository;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class TransactionRepository {
         this.jdbcClient = jdbcClient;
     }
 
+    @Transactional
     public int save(int customerId, int limitAccount, String typeTransaction, int transactionValue, String description) {
         return this.jdbcClient.sql("""
                 with transaction_customer as (
@@ -58,8 +60,6 @@ public class TransactionRepository {
                         )
                 )
                 .list();
-        // todo: verificar ordenação no java
-
     }
 
     public int getBalance(int id) {
