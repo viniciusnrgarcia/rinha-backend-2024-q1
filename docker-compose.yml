@@ -45,7 +45,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.20"
+          cpus: "0.10"
           memory: "40MB"
 
   db:
@@ -70,7 +70,7 @@ services:
           # aqui declarados é de 1.5 unidades de CPU e 550MB
           # de memória. A distribuição feita aqui é apenas
           # um exemplo – distribua como quiser.
-          cpus: "0.90"
+          cpus: "1.00"
           memory: "240MB"
 #    networks:
 #      - app-network
