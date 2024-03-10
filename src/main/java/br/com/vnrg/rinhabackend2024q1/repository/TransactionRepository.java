@@ -16,13 +16,13 @@ public class TransactionRepository {
     }
 
     public int save(int customerId, int limitAccount, String typeTransaction, int transactionValue, String description) {
-        return this.jdbcClient.sql("""
+        return this.jdbcClient.sql(String.format("""
                 with transaction_customer as (
                 							select coalesce(sum(total_value), 0) as balance
-                								from transactions t
+                								from transactions_%1$s t
                 								where t.id = :id
                 								)
-                 insert into transactions (id, "type", description, total_value, created_at)
+                 insert into transactions_%1$s  (id, "type", description, total_value, created_at)
                  select :id as id,
                  		:type_param as "type",
                  		:description as description,
@@ -30,7 +30,7 @@ public class TransactionRepository {
                  		now() as created_at
                    from transaction_customer
                    where (transaction_customer.balance + :transaction_value) >= :limit_customer
-                """)
+                """, customerId))
                 .param("id", customerId)
                 .param("type_param", typeTransaction)
                 .param("description", description)
@@ -41,14 +41,14 @@ public class TransactionRepository {
 
     @Transactional
     public List<TransactionEntity> list(int id) {
-        return this.jdbcClient.sql("""
+        return this.jdbcClient.sql(String.format("""
                 select
                 	t.id, t.type, t.description, abs(t.total_value) as total_value, t.created_at,
                 	sum(t.total_value) over (partition by t.id) as total
-                 from transactions t
+                 from transactions_%1$s t
                 where t.id = ?
                 order by t.created_at desc limit 10 offset 0
-                """)
+                """, id))
                 .param(id)
                 .query(
                         //TransactionEntity.class
@@ -65,11 +65,11 @@ public class TransactionRepository {
     }
 
     public int getBalance(int id) {
-        return this.jdbcClient.sql("""
+        return this.jdbcClient.sql(String.format("""
                     select sum(total_value)
-                    from transactions t
+                    from transactions_%1$s t
                     where t.id = ?
-                """)
+                """, id))
                 .param(id)
                 .query(Integer.class)
                 .single();

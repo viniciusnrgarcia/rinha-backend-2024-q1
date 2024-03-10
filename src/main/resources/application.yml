@@ -13,12 +13,12 @@ spring:
       enabled: true
   datasource:
     hikari:
-      connectionTimeout: ${HIKARI_MAXIMUM_CON_TIMEOUT:10000}
+      connectionTimeout: ${HIKARI_MAXIMUM_CON_TIMEOUT:5000}
       maximumPoolSize: ${HIKARI_MAXIMUM_POOL_SIZE:10}
-      minimum-idle: 2
+      minimum-idle: 10
       idle-timeout: 20000
       idleTimeout: ${HIKARI_IDLE_TIMEOUT:600000}
-      max-lifetime: 5000 # maximum lifetime in milliseconds of a connection in the pool after it is closed.
+      max-lifetime: 30000 # maximum lifetime in milliseconds of a connection in the pool after it is closed.
       auto-commit: true #default auto-commit behavior.
       # https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration
       data-source-properties:

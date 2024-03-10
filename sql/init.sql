@@ -5,7 +5,7 @@ CREATE UNLOGGED TABLE IF NOT EXISTS customers (
     balance INTEGER NULL
 );
 
-CREATE UNLOGGED TABLE IF NOT EXISTS transactions (
+CREATE UNLOGGED TABLE IF NOT EXISTS transactions_1 (
 -- CREATE TABLE transactions (
     id INTEGER NULL,
     type CHAR(1) NULL,
@@ -13,10 +13,49 @@ CREATE UNLOGGED TABLE IF NOT EXISTS transactions (
     total_value INTEGER NULL,
     created_at TIMESTAMP NULL DEFAULT NOW()
 );
-
-CREATE INDEX idx_customer_id ON transactions(id);
+CREATE INDEX idx_customer_id_1 ON transactions_1(id);
 -- CREATE INDEX idx_customer_id ON transactions(id, created_at);
 -- CREATE INDEX idx_cliente_realizada_em ON transacoes (cliente_id, realizada_em);
+
+CREATE UNLOGGED TABLE IF NOT EXISTS transactions_2 (
+-- CREATE TABLE transactions (
+    id INTEGER NULL,
+    type CHAR(1) NULL,
+    description VARCHAR(10) NULL,
+    total_value INTEGER NULL,
+    created_at TIMESTAMP NULL DEFAULT NOW()
+);
+CREATE INDEX idx_customer_id_2 ON transactions_2(id);
+
+CREATE UNLOGGED TABLE IF NOT EXISTS transactions_3 (
+-- CREATE TABLE transactions (
+    id INTEGER NULL,
+    type CHAR(1) NULL,
+    description VARCHAR(10) NULL,
+    total_value INTEGER NULL,
+    created_at TIMESTAMP NULL DEFAULT NOW()
+);
+CREATE INDEX idx_customer_id_3 ON transactions_3(id);
+
+CREATE UNLOGGED TABLE IF NOT EXISTS transactions_4 (
+-- CREATE TABLE transactions (
+    id INTEGER NULL,
+    type CHAR(1) NULL,
+    description VARCHAR(10) NULL,
+    total_value INTEGER NULL,
+    created_at TIMESTAMP NULL DEFAULT NOW()
+);
+CREATE INDEX idx_customer_id_4 ON transactions_4(id);
+
+CREATE UNLOGGED TABLE IF NOT EXISTS transactions_5 (
+-- CREATE TABLE transactions (
+    id INTEGER NULL,
+    type CHAR(1) NULL,
+    description VARCHAR(10) NULL,
+    total_value INTEGER NULL,
+    created_at TIMESTAMP NULL DEFAULT NOW()
+);
+CREATE INDEX idx_customer_id_5 ON transactions_5(id);
 
 
 --SET statement_timeout = 0;
