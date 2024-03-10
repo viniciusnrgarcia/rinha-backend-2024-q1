@@ -9,6 +9,7 @@ import br.com.vnrg.rinhabackend2024q1.repository.TransactionEntity;
 import br.com.vnrg.rinhabackend2024q1.repository.TransactionRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class TransactionService {
         return customer;
     }
 
-    // @Transactional
+    @Transactional
     public int create(CustomerEntity customer, final TransactionRequest request)  {
         int rowAffected = this.repository.save(customer.getId(), customer.getLimitAccount(),
                 request.tipo(), request.getTransactionValue(), request.descricao());

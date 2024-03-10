@@ -15,7 +15,6 @@ public class TransactionRepository {
         this.jdbcClient = jdbcClient;
     }
 
-    @Transactional
     public int save(int customerId, int limitAccount, String typeTransaction, int transactionValue, String description) {
         return this.jdbcClient.sql("""
                 with transaction_customer as (
