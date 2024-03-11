@@ -1,6 +1,5 @@
 package br.com.vnrg.rinhabackend2024q1.service;
 
-import br.com.vnrg.rinhabackend2024q1.exceptions.BalanceNotAvailableException;
 import br.com.vnrg.rinhabackend2024q1.exceptions.CustomerNotFoundException;
 import br.com.vnrg.rinhabackend2024q1.model.*;
 import br.com.vnrg.rinhabackend2024q1.repository.CustomerEntity;
@@ -9,7 +8,6 @@ import br.com.vnrg.rinhabackend2024q1.repository.TransactionEntity;
 import br.com.vnrg.rinhabackend2024q1.repository.TransactionRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,15 +33,20 @@ public class TransactionService {
         return customer;
     }
 
-    @Transactional
     public TransactionResponse create(int customerId, final TransactionRequest request) {
         var customer = this.getCustomer(customerId);
-        int rowAffected = this.repository.save(customer.getId(), customer.getLimitAccount(),
-                request.tipo(), request.getTransactionValue(), request.descricao());
-        if (rowAffected > 0) {
-            return new TransactionResponse(customer.getPositiveLimitAccount(), this.repository.getBalance(customer.getId()));
+        if (this.isCredit(request.tipo())) {
+            this.repository.saveCredit(customer.getId(), request.tipo(),
+                    request.getTransactionValue(), request.descricao());
+        } else {
+            this.repository.saveDebit(customer.getId(), customer.getLimitAccount(),
+                    request.tipo(), request.getTransactionValue(), request.descricao());
         }
-        throw new BalanceNotAvailableException("balance not available");
+        return new TransactionResponse(customer.getPositiveLimitAccount(), this.repository.getBalance(customer.getId()));
+    }
+
+    private boolean isCredit(String tipo) {
+        return tipo.equals("c");
     }
 
     public ReportResponse report(Integer customerId) {

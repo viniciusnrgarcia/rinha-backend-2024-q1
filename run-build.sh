@@ -12,9 +12,10 @@ if [ -n "$containers" ]; then
 fi
 
 docker volume prune --all --force
+docker system prune --all --force
 
 echo Build application
-docker buildx build --platform linux/amd64 -t rinha-backend-2024-q1 .
+docker buildx build --platform linux/amd64 -t vnrg/rinha-backend-2024-q1 .
 
 docker compose up --force-recreate -d
 

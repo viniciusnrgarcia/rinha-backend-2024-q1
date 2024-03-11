@@ -4,23 +4,23 @@ services:
   api01: &api
     # Lembre-se de que seu serviço HTTP deve estar hospedado num repositório
     # publicamente acessível! Ex.: hub.docker.com
-    image: rinha-backend-2024-q1:latest
+    image: vnrg/rinha-backend-2024-q1:latest
     hostname: api01
 #    network_mode: "host"
     environment:
       - DATASOURCE_URL=jdbc:postgresql://db:5432/rinhadb?useSSL=false
-      - SERVER_PORT=8081
+#      - SERVER_PORT=8081
 #      - DB_HOSTNAME=db
 
     # Não é necessário expor qualquer porta além da porta do load balancer,
     # mas é comum as pessoas o fazerem para testarem suas APIs e conectarem
     # ao banco de dados na fase de desenvolvimento.
     ports:
-      - "8081:8081"
+      - "8081:8080"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
-      interval: 30s
-      timeout: 60s
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
       retries: 3
     depends_on:
       - db
@@ -34,17 +34,8 @@ services:
     # Essa sintaxe reusa o que foi declarado em 'api01'.
     <<: *api
     hostname: api02
-    environment:
-      - DATASOURCE_URL=jdbc:postgresql://db:5432/rinhadb?useSSL=false
-      - SERVER_PORT=8082
-#      - DB_HOSTNAME=db
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8082/actuator/health" ]
-      interval: 30s
-      timeout: 60s
-      retries: 3
     ports:
-      - "8082:8082"
+      - "8082:8080"
 
   nginx:
     image: nginx:latest
@@ -73,10 +64,10 @@ services:
       - "5432:5432"
     volumes:
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./database.conf:/etc/database.conf
-    command: postgres -c config_file="/etc/database.conf"
+    #  - ./database.conf:/etc/database.conf
+    # command: postgres -c config_file="/etc/database.conf"
     # command: postgres -c 'max_connections=100' -c 'shared_buffers=200MB' -c 'fsync=off' -c 'effective_cache_size=512MB' -c 'synchronous_commit=off' -c 'checkpoint_timeout=1d' -c 'max_wal_size=1GB' -c 'full_page_writes=false'
-    # command: postgres -c checkpoint_timeout=600 -c max_wal_size=4096 -c synchronous_commit=0 -c fsync=0 -c full_page_writes=0
+    command: postgres -c checkpoint_timeout=600 -c max_wal_size=4096 -c synchronous_commit=0 -c fsync=0 -c full_page_writes=0
     deploy:
       resources:
         limits:
