@@ -8,6 +8,9 @@ spring:
     name: app01
   main:
     banner-mode: OFF
+  threads:
+    virtual:
+      enabled: true
   mvc:
     problemdetails:
       enabled: true

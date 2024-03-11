@@ -16,7 +16,7 @@ public class CustomerRepository {
         this.jdbcClient = jdbcClient;
     }
 
-    // @Cacheable
+    @Cacheable("customers.get")
     public CustomerEntity find(int id) {
         return this.findAll().get(id);
     }
@@ -26,7 +26,7 @@ public class CustomerRepository {
         List<CustomerEntity> result = this.jdbcClient.sql("""
                 select c.id, c.limit_account , c.balance  from customers c
                 """).query(
-                        (rs, rowNum) -> new CustomerEntity(
+                (rs, rowNum) -> new CustomerEntity(
                         rs.getInt("id"),
                         rs.getInt("limit_account"),
                         rs.getInt("balance"))
